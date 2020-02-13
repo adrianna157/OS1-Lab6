@@ -30,11 +30,7 @@ int main(int argc, char *argv[])
 			// oops
 			break;
 		}
-
 	}
-
-	
-
 
 	pipe(pipe1);
 	pipe(pipe2);
@@ -54,7 +50,7 @@ int main(int argc, char *argv[])
 		close(pipe1[STDIN_FILENO]);
 		close(pipe1[STDOUT_FILENO]);
 		close(pipe2[STDIN_FILENO]);
-		close(pipe2[STDOUT_FILENO]);		
+		close(pipe2[STDOUT_FILENO]);
 		close(pipe3[STDIN_FILENO]);
 		close(pipe3[STDOUT_FILENO]);
 		execlp("ls", "ls", (char *)NULL);
@@ -90,60 +86,59 @@ int main(int argc, char *argv[])
 		perror("pithy message 2");
 		_exit(3);
 
-		default:
-			break;
-		}
+	default:
+		break;
+	}
 
-		child3 = fork();
+	child3 = fork();
 
-		switch (child3)
-		{
-		case -1:
-			perror("Failed");
-			break;
+	switch (child3)
+	{
+	case -1:
+		perror("Failed");
+		break;
 
-		case 0:
+	case 0:
 
-			/* writing parents STDIN into child*/
+		/* writing parents STDIN into child*/
 
-			dup2(pipe2[STDIN_FILENO], STDIN_FILENO);
-			dup2(pipe3[STDOUT_FILENO], STDOUT_FILENO);
-			close(pipe1[STDIN_FILENO]);
-			close(pipe1[STDOUT_FILENO]);
-			close(pipe2[STDIN_FILENO]);
-			close(pipe2[STDOUT_FILENO]);
-			close(pipe3[STDIN_FILENO]);
-			close(pipe3[STDOUT_FILENO]);
-			execlp("sort", "sort", "-nr", (char *)NULL);
-			perror("pithy message 3");
-			_exit(3);
-
-		default:
-			break;
-		}
-
-		dup2(pipe3[STDIN_FILENO], STDIN_FILENO);
-
+		dup2(pipe2[STDIN_FILENO], STDIN_FILENO);
+		dup2(pipe3[STDOUT_FILENO], STDOUT_FILENO);
 		close(pipe1[STDIN_FILENO]);
 		close(pipe1[STDOUT_FILENO]);
 		close(pipe2[STDIN_FILENO]);
 		close(pipe2[STDOUT_FILENO]);
 		close(pipe3[STDIN_FILENO]);
 		close(pipe3[STDOUT_FILENO]);
-
-		if (counter == NULL)
-		{
-			execlp("head", "head", (char *)NULL);
-			perror("pithy message 4");
-			_exit(3);
-		}
-		else
-		{
-			execlp("head", "head", "-n", counter, (char *)NULL);
-		}
-		perror("failed");
-		perror("pithy message 5");
+		execlp("sort", "sort", "-nr", (char *)NULL);
+		perror("pithy message 3");
 		_exit(3);
-		return 0;
+
+	default:
+		break;
 	}
 
+	dup2(pipe3[STDIN_FILENO], STDIN_FILENO);
+
+	close(pipe1[STDIN_FILENO]);
+	close(pipe1[STDOUT_FILENO]);
+	close(pipe2[STDIN_FILENO]);
+	close(pipe2[STDOUT_FILENO]);
+	close(pipe3[STDIN_FILENO]);
+	close(pipe3[STDOUT_FILENO]);
+
+	if (counter == NULL)
+	{
+		execlp("head", "head", (char *)NULL);
+		perror("pithy message 4");
+		_exit(3);
+	}
+	else
+	{
+		execlp("head", "head", "-n", counter, (char *)NULL);
+	}
+	perror("failed");
+	perror("pithy message 5");
+	_exit(3);
+	return 0;
+}

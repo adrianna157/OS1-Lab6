@@ -20,7 +20,7 @@ BennySh: BennySh.o
 
 
 BennySh.o: BennySh.c 
-	$(CC) $(CFLAGS) -c  BennySh.c cmd_parse.h
+	$(CC) $(CFLAGS) -c  BennySh.c BennySh.h
 
 
 # csv2bin: csv2bin.
